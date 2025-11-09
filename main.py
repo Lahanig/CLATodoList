@@ -1,9 +1,6 @@
 # module_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'modules', 'co'))
-import modules.storage
-import modules.utility 
-
-utility = modules.utility.utility_instance
-storage = modules.storage.storage_instance
+from modules.storage import storage_instance as storage
+from modules.utility import utility_instance as utility
 
 def main(): 
     utility.clear_screen()
