@@ -43,4 +43,5 @@ class UI:
                 self.current_query = Query.EXIT
             case _:
                 self.current_query = Query.NONE 
+                
 UI_instance = UI()  
