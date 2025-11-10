@@ -1,6 +1,7 @@
 from enum import Enum
 
 class Query(Enum):
+    NONE = 0
     LIST_ALL_TODO = 1
     CREATE_TODO = 2
     REMOVE_TODO = 3
