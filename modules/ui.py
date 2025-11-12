@@ -1,7 +1,7 @@
 import sys
 
 from modules.types.query import Query
-from modules.query_methods.list_all_todo import list_all_todo
+from modules.query_methods.list_all_todo import render
 from modules.query_methods.list_all_query import list_all_query
 from modules.query_methods.print_welcome_screen import print_welcome_screen
 from modules.utility import utility_instance as utility
@@ -19,7 +19,7 @@ class UI:
             case Query.LIST_ALL_QUERY:
                 list_all_query()
             case Query.LIST_ALL_TODO:
-                list_all_todo()
+                render.list_all_todo()
             case Query.CLEAR_ALL_TERMINAL:
                 utility.clear_screen()
             case Query.PRINT_WELCOME_SCREEN:
