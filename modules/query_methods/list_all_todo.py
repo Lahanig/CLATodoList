@@ -11,11 +11,13 @@ class Render:
     def render_groups(self, loop_id):
         groups = storage.get_all_groups()
 
+        i = 0
         for group in groups:
             if group["id"] == loop_id:
                 if (loop_id != 0):
                     print(" ")
-                print(f''' {C().hex(group["color"], group["text"], rgb_mode=True)}''')
+                print(f''' {C().hex(group["color"], group["text"] + f"({i+1})", rgb_mode=True)}''')
+            i += 1  
 
     def render_tasks(self, loop_id):
         tasks = storage.get_all_tasks()
