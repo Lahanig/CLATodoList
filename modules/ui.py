@@ -28,7 +28,7 @@ class UI:
                 sys.exit(0)
 
     def query(self):
-        temp_query = input("\n$ ")
+        temp_query = input("\n$ ").lower()
 
         match temp_query:
             case "help":

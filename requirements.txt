@@ -1,1 +1,1 @@
-pip install colorama, pyinstaller
+pip install colr, pyinstaller

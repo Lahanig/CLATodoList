@@ -1,9 +1,8 @@
-from modules.query_methods.query_method_decorator import query_method
-from modules.storage import storage_instance as storage
-from colorama import Fore, Back, Style, init
 import math
 
-init()
+from modules.query_methods.query_method_decorator import query_method
+from modules.storage import storage_instance as storage
+from colr import Colr as C
 
 class Render:
     def __init__(self):
@@ -16,7 +15,7 @@ class Render:
             if group["id"] == loop_id:
                 if (loop_id != 0):
                     print(" ")
-                print(f''' {group["color"]}{group["text"]}{Fore.RESET}''')
+                print(f''' {C().hex(group["color"], group["text"], rgb_mode=True)}''')
 
     def render_tasks(self, loop_id):
         tasks = storage.get_all_tasks()
