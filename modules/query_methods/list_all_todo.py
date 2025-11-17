@@ -26,9 +26,13 @@ class Render:
         for task in tasks:
             if task["group_id"] == loop_id:
                 if (task["is_completed"] == False):
-                    print(f'''  {i+1}. {task["text"]}''')
+                    if task["color"] != "default":
+                        print(f'''  {C().hex(task["color"], f"{i+1}.", rgb_mode=True)} {task["text"]}''')
+                    else: print(f'''  {i+1}. {task["text"]}''')
                 else:
-                    print(f'''  {i+1}. \033[9m{task["text"]}\033[0m''')
+                    if task["color"] != "default":
+                        print(f'''  {C().hex(task["color"], f"{i+1}.", rgb_mode=True)} \033[9m{task["text"]}\033[0m''')
+                    else: print(f'''  {i+1}. \033[9m{task["text"]}\033[0m''')
                 i += 1
 
     @query_method
