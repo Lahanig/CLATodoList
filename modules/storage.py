@@ -1,22 +1,31 @@
 import sqlite3
 import os
+from pathlib import Path
 
 class Storage:
     conn = None
     cursor = None
+    is_dev_mode = False
 
     def create_db_connection(self):
-        if not os.path.exists("./modules/db"):
-            os.makedirs("./modules/db")
-            
-        self.conn = sqlite3.connect('./modules/db/storage.db')
+        temp_storage_path = "./modules/db"
+        
+        if self.is_dev_mode == False:
+            temp_path = Path.home()
+
+            temp_storage_path = f"{temp_path}/CLATodoList/db"
+
+        if not os.path.exists(temp_storage_path):
+            os.makedirs(temp_storage_path)
+
+        self.conn = sqlite3.connect(temp_storage_path + '/storage.db')
         self.cursor = self.conn.cursor()
 
     def close_db_connection_and_commit_changes(self):
         self.conn.commit()
         self.conn.close()
 
-    def __init__(self):
+    def init_db(self):
         self.create_db_connection()
 
         self.cursor.execute('''
@@ -40,7 +49,11 @@ class Storage:
 
         self.close_db_connection_and_commit_changes()
 
+    def __init__(self):
+        self.init_db()
+
     def get_all_groups(self):
+        self.init_db()
         self.create_db_connection()
         self.cursor.execute("SELECT * FROM groups")
 
@@ -55,6 +68,7 @@ class Storage:
         return temp_groups
 
     def get_all_tasks(self):
+        self.init_db()
         self.create_db_connection()
         self.cursor.execute("SELECT * FROM tasks")
 
@@ -69,12 +83,14 @@ class Storage:
         return temp_tasks
 
     def create_new_group(self, new_id, new_text, new_color):
+        self.init_db()
         self.create_db_connection()
 
         self.cursor.execute("INSERT INTO groups (id, text, color) VALUES (?, ?, ?)", (new_id, new_text, new_color))
         self.close_db_connection_and_commit_changes()
 
     def create_new_task(self, new_id, new_text, new_group_id, new_in_group_id, new_is_completed, new_color):
+        self.init_db()
         self.create_db_connection()
         self.cursor.execute("INSERT INTO tasks (id, text, group_id, in_group_id, is_completed, color) VALUES (?, ?, ?, ?, ?, ?)", (new_id, new_text, new_group_id, new_in_group_id, new_is_completed, new_color))
         self.close_db_connection_and_commit_changes()
