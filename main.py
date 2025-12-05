@@ -12,7 +12,7 @@ def main():
         UI.query()
 
 if __name__ == "__main__": 
-    if len(sys.argv) > 1 and sys.argv[1] == "dev":
+    if len(sys.argv) > 1 and sys.argv[1].lower() == "dev":
         storage.is_dev_mode = True
         main() 
     else:
