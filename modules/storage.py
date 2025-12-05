@@ -1,10 +1,14 @@
 import sqlite3
+import os
 
 class Storage:
     conn = None
     cursor = None
 
     def create_db_connection(self):
+        if not os.path.exists("./modules/db"):
+            os.makedirs("./modules/db")
+            
         self.conn = sqlite3.connect('./modules/db/storage.db')
         self.cursor = self.conn.cursor()
 
