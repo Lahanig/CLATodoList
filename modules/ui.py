@@ -4,6 +4,7 @@ from modules.types.query import Query
 from modules.query_methods.list_all_todo import render
 from modules.query_methods.list_all_query import list_all_query
 from modules.query_methods.print_welcome_screen import print_welcome_screen
+from modules.query_methods.create_new_task_or_group import create_new_task_or_group
 from modules.utility import utility_instance as utility
 
 class UI:
@@ -24,6 +25,8 @@ class UI:
                 utility.clear_screen()
             case Query.PRINT_WELCOME_SCREEN:
                 print_welcome_screen()
+            case Query.CREATE_TODO_OR_GROUP:
+                create_new_task_or_group()
             case Query.EXIT:
                 sys.exit(0)
 
@@ -39,6 +42,8 @@ class UI:
                 self.current_query = Query.CLEAR_ALL_TERMINAL
             case "welcome":
                 self.current_query = Query.PRINT_WELCOME_SCREEN
+            case "create":
+                self.current_query = Query.CREATE_TODO_OR_GROUP
             case "exit":
                 self.current_query = Query.EXIT
             case _:
