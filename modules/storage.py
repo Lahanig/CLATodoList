@@ -30,7 +30,7 @@ class Storage:
 
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS groups (
-                id INTEGER PRIMARY KEY,
+                id INTEGER,
                 text TEXT,
                 color TEXT
             )
@@ -38,7 +38,7 @@ class Storage:
         
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS tasks (
-                id INTEGER PRIMARY KEY,
+                id INTEGER,
                 text TEXT,
                 group_id INTEGER,
                 in_group_id INTEGER,
@@ -51,6 +51,32 @@ class Storage:
 
     def __init__(self):
         self.init_db()
+    
+    def update_groups_table_ids(self):
+        self.create_db_connection()
+
+        self.cursor.execute("SELECT rowid, * FROM groups")
+        rows = self.cursor.fetchall()
+
+        i = 0
+        for group in rows:
+            self.cursor.execute("UPDATE groups SET id = ?, text = ?, color = ? WHERE rowid = ?", (i, group[2], group[3], group[0]))
+            i += 1
+
+        self.close_db_connection_and_commit_changes()
+
+    def update_tasks_table_ids(self):
+        self.create_db_connection()
+
+        self.cursor.execute("SELECT rowid, * FROM tasks")
+        rows = self.cursor.fetchall()
+
+        i = 0
+        for task in rows:
+            self.cursor.execute("UPDATE tasks SET id = ?, text = ?, group_id = ?, in_group_id = ?, is_completed = ?, color = ? WHERE rowid = ?", (i, task[2], task[3], task[4], task[5], task[6], task[0]))
+            i += 1
+
+        self.close_db_connection_and_commit_changes()
 
     def get_all_groups(self):
         self.init_db()
@@ -93,6 +119,62 @@ class Storage:
         self.init_db()
         self.create_db_connection()
         self.cursor.execute("INSERT INTO tasks (id, text, group_id, in_group_id, is_completed, color) VALUES (?, ?, ?, ?, ?, ?)", (new_id, new_text, new_group_id, new_in_group_id, new_is_completed, new_color))
+        self.close_db_connection_and_commit_changes()
+
+    def update_group(self, group_id, new_text = None, new_color = None):
+        self.init_db()
+        self.create_db_connection()
+
+        if new_text != None:
+            self.cursor.execute("UPDATE groups SET text = ? WHERE id = ?", (new_text, group_id))
+        if new_color != None:
+            self.cursor.execute("UPDATE groups SET color = ? WHERE id = ?", (new_color, group_id))
+
+        self.close_db_connection_and_commit_changes()
+
+    def update_task(self, task_id, new_text = None, new_group_id = None, new_in_group_id = None, new_is_completed = None, new_color = None):
+        self.init_db()
+        self.create_db_connection()
+
+        if new_text != None:
+            self.cursor.execute("UPDATE tasks SET text = ? WHERE id = ?", (new_text, task_id))
+        if new_group_id != None:
+            self.cursor.execute("UPDATE tasks SET group_id = ? WHERE id = ?", (new_group_id, task_id))
+        if new_in_group_id != None:
+            self.cursor.execute("UPDATE tasks SET in_group_id = ? WHERE id = ?", (new_in_group_id, task_id))
+        if new_is_completed != None:
+            self.cursor.execute("UPDATE tasks SET is_completed = ? WHERE id = ?", (new_is_completed, task_id))    
+        if new_color != None:
+            self.cursor.execute("UPDATE tasks SET color = ? WHERE id = ?", (new_color, task_id))
+
+        self.close_db_connection_and_commit_changes()
+
+    def remove_group(self, group_id):
+        self.init_db()
+        self.create_db_connection()
+        self.cursor.execute("DELETE FROM groups WHERE id = ?", (str(group_id)))
+        self.close_db_connection_and_commit_changes()
+
+        self.update_groups_table_ids()
+
+    def remove_task(self, new_group_id, new_in_group_id):
+        self.init_db()
+        self.create_db_connection()
+        self.cursor.execute("DELETE FROM tasks WHERE group_id = ? and in_group_id = ?", (str(new_group_id), str(new_in_group_id)))
+        self.close_db_connection_and_commit_changes()
+
+        self.update_tasks_table_ids()
+
+        self.create_db_connection()
+
+        self.cursor.execute("SELECT rowid, * FROM tasks WHERE group_id = ?", (str(new_group_id)))
+        rows = self.cursor.fetchall()
+
+        i = 0
+        for task in rows:
+            self.cursor.execute("UPDATE tasks SET id = ?, text = ?, group_id = ?, in_group_id = ?, is_completed = ?, color = ? WHERE rowid = ?", (task[1], task[2], task[3], i, task[5], task[6], task[0]))
+            i += 1
+
         self.close_db_connection_and_commit_changes()
 
     def create_default_groups(self):
