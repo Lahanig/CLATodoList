@@ -11,4 +11,5 @@ def list_all_query():
     print(' "clear" - clear app screen')
     print(' "welcome" - print welcome screen')
     print(' "create" - create new group/task')
+    print(' "remove" - remove group/task')
     print(' "exit" - exit')
