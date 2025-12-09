@@ -132,20 +132,38 @@ class Storage:
 
         self.close_db_connection_and_commit_changes()
 
-    def update_task(self, task_id, new_text = None, new_group_id = None, new_in_group_id = None, new_is_completed = None, new_color = None):
+    def update_task(self, task_group_id, task_in_group_id, new_group_id = None, new_text = None, new_is_completed = None, new_color = None):
         self.init_db()
         self.create_db_connection()
 
         if new_text != None:
-            self.cursor.execute("UPDATE tasks SET text = ? WHERE id = ?", (new_text, task_id))
+            self.cursor.execute("UPDATE tasks SET text = ? WHERE group_id = ? and in_group_id = ?", (new_text, task_group_id, task_in_group_id))
         if new_group_id != None:
-            self.cursor.execute("UPDATE tasks SET group_id = ? WHERE id = ?", (new_group_id, task_id))
-        if new_in_group_id != None:
-            self.cursor.execute("UPDATE tasks SET in_group_id = ? WHERE id = ?", (new_in_group_id, task_id))
+            self.cursor.execute("UPDATE tasks SET group_id = ? WHERE group_id = ? and in_group_id = ?", (new_group_id, task_group_id, task_in_group_id))
+        # if new_in_group_id != None:
+        #     self.cursor.execute("UPDATE tasks SET in_group_id = ? WHERE group_id = ? and in_group_id = ?", (new_in_group_id, new_group_id, new_in_group_id))
         if new_is_completed != None:
-            self.cursor.execute("UPDATE tasks SET is_completed = ? WHERE id = ?", (new_is_completed, task_id))    
+            self.cursor.execute("UPDATE tasks SET is_completed = ? WHERE group_id = ? and in_group_id = ?", (new_is_completed, task_group_id, task_in_group_id))    
         if new_color != None:
-            self.cursor.execute("UPDATE tasks SET color = ? WHERE id = ?", (new_color, task_id))
+            self.cursor.execute("UPDATE tasks SET color = ? WHERE group_id = ? and in_group_id = ?", (new_color, task_group_id, task_in_group_id))
+
+        self.close_db_connection_and_commit_changes()
+
+        self.update_task_in_group_ids(task_group_id)
+
+        if new_group_id != None:
+            self.update_task_in_group_ids(new_group_id)
+
+    def update_task_in_group_ids(self, group_id):
+        self.create_db_connection()
+
+        self.cursor.execute("SELECT rowid, * FROM tasks WHERE group_id = ?", (str(group_id)))
+        rows = self.cursor.fetchall()
+
+        i = 0
+        for task in rows:
+            self.cursor.execute("UPDATE tasks SET id = ?, text = ?, group_id = ?, in_group_id = ?, is_completed = ?, color = ? WHERE rowid = ?", (task[1], task[2], task[3], i, task[5], task[6], task[0]))
+            i += 1
 
         self.close_db_connection_and_commit_changes()
 
@@ -167,15 +185,7 @@ class Storage:
 
         self.create_db_connection()
 
-        self.cursor.execute("SELECT rowid, * FROM tasks WHERE group_id = ?", (str(new_group_id)))
-        rows = self.cursor.fetchall()
-
-        i = 0
-        for task in rows:
-            self.cursor.execute("UPDATE tasks SET id = ?, text = ?, group_id = ?, in_group_id = ?, is_completed = ?, color = ? WHERE rowid = ?", (task[1], task[2], task[3], i, task[5], task[6], task[0]))
-            i += 1
-
-        self.close_db_connection_and_commit_changes()
+        self.update_task_in_group_ids(new_group_id)
 
     def create_default_groups(self):
         temp_groups = [{"id": 0, "text": "Важно", "color": "#ff0000"}, {"id": 1, "text": "Менее важно", "color": "ffff00"}, {"id": 2, "text": "Не забыть", "color": "00ff00"}]

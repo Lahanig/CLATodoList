@@ -5,6 +5,7 @@ from modules.query_methods.list_all_todo import render
 from modules.query_methods.list_all_query import list_all_query
 from modules.query_methods.print_welcome_screen import print_welcome_screen
 from modules.query_methods.create_new_task_or_group import create_new_task_or_group
+from modules.query_methods.update_task_or_group import update_task_or_group
 from modules.query_methods.remove_task_or_group import remove_task_or_group
 from modules.utility import utility_instance as utility
 
@@ -29,7 +30,7 @@ class UI:
             case Query.CREATE_TODO_OR_GROUP:
                 create_new_task_or_group()
             case Query.UPDATE_TODO_OR_GROUP:
-                pass
+                update_task_or_group()
             case Query.REMOVE_TODO_OR_GROUP:
                 remove_task_or_group()
             case Query.EXIT:
