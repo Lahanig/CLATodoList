@@ -36,7 +36,7 @@ def update_task_or_group():
             if task["group_id"] == temp_task_group_id and task["in_group_id"] == temp_task_in_group_id:
                 temp_task = {"id": task["id"], "text": task["text"], "group_id": task["group_id"], "in_group_id": task["in_group_id"], "is_completed": task["is_completed"], "color": task["color"]}
 
-        temp_task["text"] = input(" Enter new name(skip this field for save old data): ") or temp_task["text"]
+        temp_task["text"] = input(" Enter new text(skip this field for save old data): ") or temp_task["text"]
         temp_task["group_id"] = int(input(" Enter task new group id(skip this field for save old data): ") or temp_task["group_id"] + 1) - 1 
         # temp_task["in_group_id"] = int(input(" Enter new task id in group(skip this field for save old data): ")) or temp_task["in_group_id"]
         temp_task_is_completed = input(" Complete task?(y/n)(default: n): ").lower or "n"
