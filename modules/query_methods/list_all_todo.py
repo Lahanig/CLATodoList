@@ -1,10 +1,10 @@
 import math
 
-from modules.query_methods.query_method_decorator import query_method
+from modules.query_methods.base_query_method import BaseQueryMethod, query_method
 from modules.storage import storage_instance as storage
 from colr import Colr as C
 
-class Render:
+class QueryMethod(BaseQueryMethod):
     def __init__(self):
         pass
 
@@ -38,10 +38,8 @@ class Render:
                     except:
                         print(f'''  {task["in_group_id"]+1}. \033[9m{task["text"]}\033[0m''')
 
-
-
     @query_method
-    def list_all_todo(self):
+    def render(self):
         groups = storage.get_all_groups()
 
         if len(storage.get_all_groups()) == 0:
@@ -52,4 +50,4 @@ class Render:
                 self.render_groups(i)
                 self.render_tasks(i)
 
-render = Render()
+list_all_todo = QueryMethod()

@@ -1,41 +1,43 @@
-from modules.query_methods.query_method_decorator import query_method
+from modules.query_methods.base_query_method import BaseQueryMethod, query_method
 from modules.storage import storage_instance as storage
 
-@query_method
-def create_new_task_or_group():
-    temp_group = {"id": 0, "text": "", "color": "default"}
-    temp_task = {"id": 0, "text": "", "group_id": 0, "in_group_id": 0, "is_completed": False, "color": "default"}
-    is_create_new_group = False
+class QueryMethod(BaseQueryMethod):
+    def __init__(self):
+        super()
 
-    print("Create new task/group:")
-
-    temp_flag = input(" Create new task or group?(default: task)(y/n): ") or "y"
-
-    if temp_flag.lower() != "y":
-        is_create_new_group = True
-    else: is_create_new_group = False
-
-    if is_create_new_group == True:
-        temp_group["text"] = input(" Enter name: ")
-        temp_group["color"] = input(" Enter hex color(skip this field for default color): ") or temp_group["color"]
-
-        temp_group["id"] = len(storage.get_all_groups())
-
-        storage.create_new_group(temp_group["id"], temp_group["text"], temp_group["color"])
-    else: 
-        temp_task["text"] = input(" Enter text: ")
-        temp_task["group_id"] = int(input(" Enter group id: ")) or 0
-        temp_task["color"] = input(" Enter hex color(skip this field for default color): ") or temp_task["color"]
-
-        temp_tasks = storage.get_all_tasks()
-
-        temp_task["id"] = len(temp_tasks)
-
-        i = 0
-        for task in temp_tasks:
-            if task["group_id"] == temp_task["group_id"]-1:
-                i = task["in_group_id"]+1
+    @query_method
+    def render(self):
+        self.reset_default_values()
         
-        temp_task["in_group_id"] = i
+        is_create_new_task = True
 
-        storage.create_new_task(temp_task["id"], temp_task["text"], temp_task["group_id"]-1, temp_task["in_group_id"], temp_task["is_completed"], temp_task["color"])
+        print("Create new task/group:")
+
+        is_create_new_task = self.process_user_query(" Create new task or group?(default: task)(y/n): ", bool, default_value = True)
+
+        if is_create_new_task == True:
+            self.default_task["text"] = self.process_user_query(" Enter text: ")
+            self.default_task["group_id"] = self.process_user_query(" Enter group id: ", int, default_value = 0)
+            self.default_task["color"] = self.process_user_query(" Enter hex color(skip this field for default color): ", default_value = self.default_task["color"])
+
+            temp_tasks = storage.get_all_tasks()
+
+            self.default_task["id"] = len(temp_tasks)
+
+            i = 0
+            for task in temp_tasks:
+                if task["group_id"] == self.default_task["group_id"]-1:
+                    i = task["in_group_id"]+1
+            
+            self.default_task["in_group_id"] = i
+
+            storage.create_new_task(self.default_task["id"], self.default_task["text"], self.default_task["group_id"]-1, self.default_task["in_group_id"], self.default_task["is_completed"], self.default_task["color"])
+        else: 
+            self.default_group["text"] = self.process_user_query(" Enter name: ")
+            self.default_group["color"] = self.process_user_query(" Enter hex color(skip this field for default color): ", default_value = self.default_group["color"])
+
+            self.default_group["id"] = len(storage.get_all_groups())
+
+            storage.create_new_group(self.default_group["id"], self.default_group["text"], self.default_group["color"])
+
+create_new_task_or_group = QueryMethod()

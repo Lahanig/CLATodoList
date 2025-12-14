@@ -1,12 +1,13 @@
 import sys
 
 from modules.types.query import Query
-from modules.query_methods.list_all_todo import render
+from modules.query_methods.list_all_todo import list_all_todo
 from modules.query_methods.list_all_query import list_all_query
 from modules.query_methods.print_welcome_screen import print_welcome_screen
 from modules.query_methods.create_new_task_or_group import create_new_task_or_group
 from modules.query_methods.update_task_or_group import update_task_or_group
 from modules.query_methods.remove_task_or_group import remove_task_or_group
+from modules.query_methods.base_query_method import base_query_method
 from modules.utility import utility_instance as utility
 
 class UI:
@@ -18,21 +19,21 @@ class UI:
     def invoke_query_method(self):
         match self.current_query:
             case Query.NONE:
-                pass
+                base_query_method.render()
             case Query.LIST_ALL_QUERY:
-                list_all_query()
+                list_all_query.render()
             case Query.LIST_ALL_TODO:
-                render.list_all_todo()
+                list_all_todo.render()
             case Query.CLEAR_ALL_TERMINAL:
                 utility.clear_screen()
             case Query.PRINT_WELCOME_SCREEN:
-                print_welcome_screen()
+                print_welcome_screen.render()
             case Query.CREATE_TODO_OR_GROUP:
-                create_new_task_or_group()
+                create_new_task_or_group.render()
             case Query.UPDATE_TODO_OR_GROUP:
-                update_task_or_group()
+                update_task_or_group.render()
             case Query.REMOVE_TODO_OR_GROUP:
-                remove_task_or_group()
+                remove_task_or_group.render()
             case Query.EXIT:
                 sys.exit(0)
 
