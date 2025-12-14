@@ -1,24 +1,27 @@
 import sqlite3
 import os
+
 from pathlib import Path
 
 class Storage:
     conn = None
     cursor = None
     is_dev_mode = False
+    current_home_path = None
 
     def create_db_connection(self):
-        temp_storage_path = "./modules/db"
+        temp_storage_path = "./modules/"
         
         if self.is_dev_mode == False:
             temp_path = Path.home()
 
-            temp_storage_path = f"{temp_path}/CLATodoList/db"
+            temp_storage_path = f"{temp_path}/CLATodoList/"
 
         if not os.path.exists(temp_storage_path):
             os.makedirs(temp_storage_path)
 
-        self.conn = sqlite3.connect(temp_storage_path + '/storage.db')
+        self.current_home_path = temp_storage_path
+        self.conn = sqlite3.connect(self.current_home_path + 'db/storage.db')
         self.cursor = self.conn.cursor()
 
     def close_db_connection_and_commit_changes(self):
