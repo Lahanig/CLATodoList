@@ -8,7 +8,7 @@ from modules.storage import storage_instance as storage
 from modules.ui import UI_instance as UI
 from modules.utility import utility_instance as utility
 
-history_file = os.path.join(storage.current_home_path, '.my_app_history')
+history_file = os.path.join(storage.current_home_path, '.app_history')
 
 def save_history():
     """Saves the current session's history to a file."""
@@ -16,7 +16,7 @@ def save_history():
         readline.write_history_file(history_file)
     except IOError:
         pass
-        #print(f"Warning: Could not write history file to {history_file}")
+        # print(f"Warning: Could not write history file to {history_file}")
 
 def load_history():
     """Loads history from a file if it exists."""
