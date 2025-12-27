@@ -6,15 +6,23 @@ arch=('any')
 url="https://github.com/Lahanig/CLATodoList"
 license=('MIT')
 depends=('python>=3.13.7')
-makedepends=('python-pipx')
+makedepends=('git')
 source=("git+file://${startdir}")
 #source=("$pkgname-$pkgver.tar.gz::https://github.com/Lahanig/$pkgname/archive/v$pkgver.tar.gz")
 sha256sums=('SKIP')
 
 build() {
-    cd "$srcdir"
+    cd "$srcdir/.."
+
+    if [ ! -d "pyinstaller" ]; then
+        git clone https://aur.archlinux.org/pyinstaller.git
+    fi
     
-    pipx install pyinstaller
+    cd pyinstaller
+
+    makepkg -si
+
+    cd "$srcdir"
 
     python3 build_app.py
 }
