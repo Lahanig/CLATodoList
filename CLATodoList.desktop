@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Todo
+Comment=Simple CLA application for make todo
+Type=Application
+Exec=/usr/bin/CLATodoList
+Icon=~.local/share/icons/CLATodoList-icon.png
+Terminal=True
+Categories=Work;

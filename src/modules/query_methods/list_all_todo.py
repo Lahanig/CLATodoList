@@ -2,7 +2,7 @@ import math
 
 from modules.query_methods.base_query_method import BaseQueryMethod, query_method
 from modules.storage import storage_instance as storage
-from colr import Colr as C
+from modules.utility import utility_instance as utility
 
 class QueryMethod(BaseQueryMethod):
     def __init__(self):
@@ -17,7 +17,7 @@ class QueryMethod(BaseQueryMethod):
                 if (loop_id != 0):
                     print(" ")
                 try:
-                    print(f''' {C().hex(group["color"], group["text"] + f"({group["id"]+1})", rgb_mode=True)}''')
+                    print(f''' {utility.color_text_hex(group["color"], group["text"] + f"({group["id"]+1})")}''')
                 except: 
                     print(f''' {group["text"] + f"({group["id"]+1})"}''')
             i += 1  
@@ -29,12 +29,12 @@ class QueryMethod(BaseQueryMethod):
             if task["group_id"] == loop_id:
                 if (task["is_completed"] == False):
                     try: 
-                        print(f'''  {C().hex(task["color"], f"{task["in_group_id"]+1}.", rgb_mode=True)} {task["text"]}''')
+                        print(f'''  {utility.color_text_hex(task["color"], f"{task["in_group_id"]+1}.")} {task["text"]}''')
                     except:
                         print(f'''  {task["in_group_id"]+1}. {task["text"]}''')
                 else:
                     try:
-                        print(f'''  {C().hex(task["color"], f"{task["in_group_id"]+1}.", rgb_mode=True)} \033[9m{task["text"]}\033[0m''')
+                        print(f'''  {utility.color_text_hex(task["color"], f"{task["in_group_id"]+1}.")} \033[9m{task["text"]}\033[0m''')
                     except:
                         print(f'''  {task["in_group_id"]+1}. \033[9m{task["text"]}\033[0m''')
 

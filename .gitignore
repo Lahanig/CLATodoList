@@ -3,6 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+*.pkg.tar.zst
+pkg/
+
+CLATodoList/
+
 .VSCodeCounter/
 # C extensions
 *.so

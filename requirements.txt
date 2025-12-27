@@ -1,1 +1,1 @@
-pip install colr, pyinstaller
+pip install pyinstaller

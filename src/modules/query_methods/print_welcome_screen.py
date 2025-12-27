@@ -1,5 +1,5 @@
 from modules.query_methods.base_query_method import BaseQueryMethod, query_method
-from colr import Colr as C
+from modules.utility import utility_instance as utility
 
 class QueryMethod(BaseQueryMethod):
     def __init__(self):
@@ -7,6 +7,6 @@ class QueryMethod(BaseQueryMethod):
 
     @query_method
     def render(self):
-        print(f'''Welcome to Kaibi {C().hex('00aaff', 'CLATodoList', rgb_mode=True)}\nPrint {C().hex('00ff00', 'help', rgb_mode=True)} to check query(command) list''')
+        print(f'''Welcome to Kaibi {utility.color_text_hex('00aaff', 'CLATodoList')}\nPrint {utility.color_text_hex('00ff00', 'help')} to check query(command) list''')
 
 print_welcome_screen = QueryMethod()
