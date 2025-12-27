@@ -6,7 +6,7 @@ arch=('any')
 url="https://github.com/Lahanig/CLATodoList"
 license=('MIT')
 depends=('python>=3.13.7')
-makedepends=('git')
+makedepends=('git' 'python-setuptools')
 source=("git+file://${startdir}")
 #source=("$pkgname-$pkgver.tar.gz::https://github.com/Lahanig/$pkgname/archive/v$pkgver.tar.gz")
 sha256sums=('SKIP')
@@ -14,10 +14,26 @@ sha256sums=('SKIP')
 build() {
     cd "$srcdir/.."
 
+    if [ ! -d "python-altgraph" ]; then
+        git clone https://aur.archlinux.org/python-altgraph.git
+    fi
+
+    cd python-altgraph
+
+    makepkg -si
+
+    if [ ! -d "pyinstaller-hooks-contrib" ]; then
+        git clone https://aur.archlinux.org/pyinstaller-hooks-contrib.git
+    fi
+
+    cd pyinstaller-hooks-contrib 
+
+    makepkg -si
+
     if [ ! -d "pyinstaller" ]; then
         git clone https://aur.archlinux.org/pyinstaller.git
     fi
-    
+
     cd pyinstaller
 
     makepkg -si

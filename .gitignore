@@ -5,6 +5,7 @@ __pycache__/
 
 *.pkg.tar.zst
 pkg/
+pyinstaller/
 
 CLATodoList/
 
