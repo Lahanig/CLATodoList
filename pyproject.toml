@@ -9,5 +9,5 @@ description = "Simple CLI application for make todo"
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
-    {name = "Kaibi"}
+    {name = "Lahanig"}
 ]
