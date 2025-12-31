@@ -24,3 +24,16 @@ makepkg -si
 ### Other Distros
 
 Download bin file from latest release
+
+<h1>Usage</h1>
+
+For run app from terminal
+
+```bash
+CLATodoList
+```
+or
+
+```bash
+./"path to the bin file"
+```
