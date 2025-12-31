@@ -1,7 +1,7 @@
 pkgname=CLATodoList
 pkgver=0.3.1
 pkgrel=1
-pkgdesc="Simple CLA application for make todo"
+pkgdesc="Simple CLI application for make todo"
 arch=('any')
 url="https://github.com/Lahanig/CLATodoList"
 license=('MIT')
