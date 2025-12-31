@@ -1,2 +1,2 @@
 # CLATodoList
- CLATodoList by Kaibi
+ Simple CLI application for make todo
