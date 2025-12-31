@@ -9,7 +9,7 @@
 
 Download package from latest release
 ```bash
-cd "download folder"
+cd "Downloads folder"
 
 sudo pacman -U package 
 ```
